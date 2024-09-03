@@ -568,9 +568,21 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {
+          cmd = { 'clangd', '--header-insertion=never' },
+          filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+          root_dir = require('lspconfig').util.root_pattern('.git', 'compile_commands.json', 'compile_flag.txt', 'build'),
+          settings = {
+            clangd = {
+              args = {
+                '--compile-commands-dir=./build',
+                '--query-driver=/usr/bin/clang++,/usr/local/bin/g++,/opt/homebrew/bin/g++',
+              },
+            },
+          },
+        },
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
